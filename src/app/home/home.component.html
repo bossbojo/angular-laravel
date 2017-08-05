@@ -1,1 +1,41 @@
-<img src="assets\img\my-cover.jpg" alt="" width="100%">
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>First Name - Last Name</th>
+            <th>E-mail</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Paramat Singkon</td>
+            <td>Paramat@hotmail.com</td>
+            <td style="width: 250px;">
+              <button type="button" class="btn btn-info btn-sm">Detail</button>
+              <button type="button" class="btn btn-warning btn-sm">Edit</button>
+              <button type="button" class="btn btn-danger btn-sm">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col">
+      <form>
+        <div class="form-group">
+          <label for="Name">Name:</label>
+          <input type="text" class="form-control" id="name">
+        </div>
+        <div class="form-group">
+          <label for="email">E-mail:</label>
+          <input type="email" class="form-control" id="email">
+        </div>
+        <button type="submit" class="btn btn-success">ADD</button>
+      </form>
+    </div>
+  </div>
+</div>
