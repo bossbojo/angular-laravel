@@ -17,9 +17,9 @@
             <td>{{ User.name }}</td>
             <td>{{ User.email }}</td>
             <td style="width: 250px;">
-              <!-- <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="MyModal{{i}}">Detail</button> -->
+              <button type="button" (click)="onDetail(i)" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModalLong">Detail</button> 
               <button type="button" class="btn btn-warning btn-sm">Edit</button>
-              <button type="button" class="btn btn-danger btn-sm">Delete</button>
+              <button type="button" (click)="deleteItem(i)" class="btn btn-danger btn-sm">Delete</button>
             </td>
           </tr>
         </tbody>
@@ -47,20 +47,22 @@
 </div>
 
 <!-- Modal -->
-<div *ngFor="let User of User ; let i = index" [attr.data-index]="i">
-  <div class="modal fade" id="myModal{{i}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title ID#{{i}}</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Modal title ID #<span id="userid"></span></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
         </div>
         <div class="modal-body">
-          <label for="">Name:</label>
-          <label for="">E-mail:</label>
-          <label for="">Detail:</label>
+          <h6 for="">Name:</h6>
+          <span id="userName"></span>
+          <h6 for="">E-mail:</h6>
+          <span id="userEmail"></span>
+          <h6 for="">Detail:</h6>
+          <span id="userDetail"></span>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -68,4 +70,3 @@
       </div>
     </div>
   </div>
-</div>
