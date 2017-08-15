@@ -13,13 +13,13 @@
         </thead>
         <tbody>
           <tr *ngFor="let User of User ; let i = index" [attr.data-index]="i">
-            <th scope="row">{{ i+1 }}</th>
+            <th scope="row">{{ User.id }}</th>
             <td>{{ User.name }}</td>
             <td>{{ User.email }}</td>
             <td style="width: 250px;">
-              <!-- <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="MyModal{{i}}">Detail</button> -->
+              <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="MyModal" (click)="detail(i)">Detail</button> 
               <button type="button" class="btn btn-warning btn-sm">Edit</button>
-              <button type="button" class="btn btn-danger btn-sm" (click)="deleteItem(i)">Delete</button>
+              <button type="button" class="btn btn-danger btn-sm" (click)="onDelete(User.id)">Delete</button>
             </td>
           </tr>
         </tbody>
@@ -29,16 +29,16 @@
     <div class="col">
       <form>
         <div class="form-group">
-          <label for="Name">Name:</label>
-          <input type="text" class="form-control" id="name" #name>
+          <label for="Name">Full-Name:</label>
+          <input  type="text" class="form-control" id="name" #name placeholder="Full-name">
         </div>
         <div class="form-group">
           <label for="email">E-mail:</label>
-          <input type="email" class="form-control" id="email" #email>
+          <input  type="email" class="form-control" id="email" #email placeholder="Email">
         </div>
         <div class="form-group">
           <label for="detail">Detail:</label>
-          <textarea type="detail" class="form-control" id="detail" #detail></textarea>
+          <input  type="detail" class="form-control" id="detail" #detail placeholder="Detail">
         </div>
         <button type="submit" class="btn btn-success" (click)="onAdd(name.value,email.value,detail.value)">ADD</button>
       </form>
@@ -47,8 +47,8 @@
 </div>
 
 <!-- Modal -->
-<div *ngFor="let User of User ; let i = index" [attr.data-index]="i">
-  <div class="modal fade" id="myModal{{i}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -68,4 +68,3 @@
       </div>
     </div>
   </div>
-</div>
