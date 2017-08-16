@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Http, Response, RequestOptionsArgs, Headers } from '@angular/http';
+import { ValidatorsConfig } from '../configs/validators.config';
 
 declare let $;
 @Component({
@@ -8,55 +9,71 @@ declare let $;
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  User: Users[] = [];
+  User: any[] = [];
   constructor(private http: Http) {
     this.getData();
   }
-
   ngOnInit() {
   }
-
   onAdd(name: string, email: string, detail: string) {
+
+    $('#loadingADD').fadeIn();
     $('#name').val(''); $('#email').val(''); $('#detail').val('');
     var obj = { fullname: name, email: email, detail: detail };
     this.http.post('http://localhost:8000/api/info', obj).subscribe((res) => {
-      console.log(res);
+      this.getData();
+      $('#loadingADD').fadeOut();
     }, (err) => {
       console.log(err);
     });
-    this.getData();
+
   }
   onDelete(index) {
-    this.http.delete('http://localhost:8000/api/info/'+index).subscribe((res) => {
-      console.log(res);
+    $('#loading' + index).fadeIn();
+    this.http.delete('http://localhost:8000/api/info/' + index).subscribe((res) => {
+      this.getData();
+      $('#loading' + index).fadeOut();
     });
-    this.getData();
+
   }
   getData() {
-    this.User = [];
-    this.http.get('http://localhost:8000/api/info').subscribe(
-      (res) => {
-        var data = res.json().getinfo;
-        for (var i = 0; i < data.length; i++) {
-          this.User.push(new Users(data[i].id, data[i].fullname, data[i].email, data[i].detail));
+      this.http.get('http://localhost:8000/api/info').subscribe(
+        (res) => {
+          this.User = res.json().getinfo;
+        },
+        (err) => {
+          console.log(err);
         }
-      },
-      (err) => {
-        console.log(err);
+      );
+  }
+  Ondetail(Id) {
+    for (var i = 0; i < this.User.length; i++) {
+      if (this.User[i].id == Id) {
+        $('#IDdata').html(this.User[i].id);
+        $('#D-name').html(this.User[i].fullname);
+        $('#D-mail').html(this.User[i].email);
+        $('#D-detail').html(this.User[i].detail);
       }
-    );
+    }
   }
-}
-
-export class Users {
-  constructor(id: string, name: string, email: string, detail: string) {
-    this.id = id;
-    this.name = name;
-    this.email = email;
-    this.detail = detail;
+  OnEdit(Id) {
+    for (var i = 0; i < this.User.length; i++) {
+      if (this.User[i].id == Id) {
+        $('#IDdataE').html(this.User[i].id);
+        $('#IdEdit').val(this.User[i].id);
+        $('#fullnameE').val(this.User[i].fullname);
+        $('#emailE').val(this.User[i].email);
+        $('#detailE').val(this.User[i].detail);
+      }
+    }
   }
-  id: String
-  name: String;
-  email: String;
-  detail: String;
+  OnSubmit(Id, name, email, detail) {
+    $('#loadingEdit').fadeIn();
+    var obj = { fullname: name, email: email, detail: detail };
+    this.http.put('http://localhost:8000/api/info/' + Id, obj).subscribe((res) => {
+      this.getData();
+      $('#loadingEdit').fadeOut();
+      $('#closeEdit').click();
+    });
+  }
 }

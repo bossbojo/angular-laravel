@@ -1,46 +1,60 @@
 <div class="container-fluid">
   <div class="row">
+      <div class="col" align="center">
+        <h1>Restful API</h1>
+        <h3>ANGULAR 4 + LARAVEL 5.3</h3>
+        <img src="https://cdn.worldvectorlogo.com/logos/angular-icon-1.svg" alt="" width="150px">
+        <img src="https://maxcdn.icons8.com/Share/icon/Science//plus_math1600.png" alt="" width="50px">
+        <img src="https://cdn.worldvectorlogo.com/logos/laravel.svg" alt="" width="150px">
+        <hr>
+      </div>
+  </div>
+  <div class="row">
     <!-- show your data  -->
     <div class="col">
       <table class="table table-striped">
         <thead>
           <tr>
             <th>#</th>
-            <th>First Name - Last Name</th>
+            <th>Full-name</th>
             <th>E-mail</th>
+            <th>Create_at</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let User of User ; let i = index" [attr.data-index]="i">
             <th scope="row">{{ User.id }}</th>
-            <td>{{ User.name }}</td>
+            <td>{{ User.fullname }}</td>
             <td>{{ User.email }}</td>
+            <td>{{ User.created_at }}</td>
             <td style="width: 250px;">
-              <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="MyModal" (click)="detail(i)">Detail</button> 
-              <button type="button" class="btn btn-warning btn-sm">Edit</button>
-              <button type="button" class="btn btn-danger btn-sm" (click)="onDelete(User.id)">Delete</button>
+              <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal" (click)="Ondetail(User.id)"><i class="fa fa-eye" ></i></button>
+              <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModaledit" (click)="OnEdit(User.id)"><i class="fa fa-pencil" ></i></button>
+              <button type="button" class="btn btn-danger btn-sm" (click)="onDelete(User.id)"><i class="fa fa-trash" ></i></button>
+              <img src="assets\img\loading.gif" id="loading{{ User.id }}" style="display:none;" width="20px">
             </td>
           </tr>
         </tbody>
       </table>
     </div>
     <!-- you can create your info -->
-    <div class="col">
+    <div class="col ">
       <form>
         <div class="form-group">
           <label for="Name">Full-Name:</label>
-          <input  type="text" class="form-control" id="name" #name placeholder="Full-name">
+          <input type="text" class="form-control" id="name" #name placeholder="Full-name">
         </div>
         <div class="form-group">
           <label for="email">E-mail:</label>
-          <input  type="email" class="form-control" id="email" #email placeholder="Email">
+          <input type="email" class="form-control" id="email" #email placeholder="Email">
         </div>
         <div class="form-group">
           <label for="detail">Detail:</label>
-          <input  type="detail" class="form-control" id="detail" #detail placeholder="Detail">
+          <input type="detail" class="form-control" id="detail" #detail placeholder="Detail">
         </div>
         <button type="submit" class="btn btn-success" (click)="onAdd(name.value,email.value,detail.value)">ADD</button>
+        <img src="assets\img\loading.gif" id="loadingADD" style="display:none;" width="20px">
       </form>
     </div>
   </div>
@@ -48,23 +62,63 @@
 
 <!-- Modal -->
 
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title ID#{{i}}</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title ID#<b><span id="IDdata"></span></b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        </div>
-        <div class="modal-body">
-          <label for="">Name:</label>
-          <label for="">E-mail:</label>
-          <label for="">Detail:</label>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
+      </div>
+      <div class="modal-body">
+        <label for="">Name:</label>
+        <span id="D-name"></span><br>
+        <label for="">E-mail:</label>
+        <span id="D-mail"></span><br>
+        <label for="">Detail:</label>
+        <span id="D-detail"></span><br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
+</div>
+
+<div id="myModaledit" class="modal fade" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title ID#<span id="IDdataE"></span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <form>
+        <div class="modal-body">
+          <div class="form-group">
+            <input type="hidden" id="IdEdit" #IDedit>
+            <label for="">Name:</label>
+            <input type="text" class="form-control" id="fullnameE" #fullnameE placeholder="Full-name">
+          </div>
+          <div class="form-group">
+            <label for="">E-mail:</label>
+            <input type="email" class="form-control" id="emailE" #emailE placeholder="E-mail">
+          </div>
+          <div class="form-group">
+            <label for="">Detail:</label>
+            <input type="text" class="form-control" id="detailE" #detailE placeholder="Detail">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success" (click)="OnSubmit(IDedit.value,fullnameE.value,emailE.value,detailE.value)">
+            Save
+            <img src="assets\img\loading.gif" id="loadingEdit" style="display:none;" width="20px">
+          </button>
+          <button id="closeEdit" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
